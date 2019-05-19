@@ -1,5 +1,5 @@
 {
-  "name": "vue-circular-count-down-timer",
+  "name": "vuejs-circular-count-down-timer",
   "version": "0.1.0",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -50,5 +50,15 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noorzaie/vue-circular-count-down-timer.git"
+  },
+  "keywords": ["vue", "vuejs", "javascript", "timer", "countdown", "circular"],
+  "author": {
+    "email": "aanoorzaie@gmail.com",
+    "name": "AzizAhmad Noorzaie"
+  },
+  "license": "MIT"
 }

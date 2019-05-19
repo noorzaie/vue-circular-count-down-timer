@@ -4,7 +4,7 @@ This is a count down timer for Vue js framework. This library supports two types
 2. Single mode: Timber based on second (single circle without hours and minutes).
 ## Installation
 ```
-npm install vue-circular-count-down-timer
+npm install vuejs-circular-count-down-timer
 ```
 After installation, import component:
 ```
