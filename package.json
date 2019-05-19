@@ -1,11 +1,11 @@
 {
-  "name": "vue-count-down-timer",
+  "name": "vue-circular-count-down-timer",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build-bundle": "vue-cli-service build --target lib --name vue-count-down-timer ./src/components/index.js"
   },
   "dependencies": {
     "core-js": "^2.6.5",
@@ -20,6 +20,14 @@
     "eslint-plugin-vue": "^5.0.0",
     "vue-template-compiler": "^2.5.21"
   },
+  "main": "./dist/vue-count-down-timer.common.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
   "eslintConfig": {
     "root": true,
     "env": {
