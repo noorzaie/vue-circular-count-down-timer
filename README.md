@@ -12,6 +12,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 ```
 
 ###Documentation
+
 | Props | Description |
 | --- | --- |
 | initial_value | Initial value of timer, as seconds. (required) |
@@ -41,7 +42,9 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 | update | Fires on each counting. |
 
 ### Usage
+
 ####1. basic timer
+
 ```
 <CircularCountDownTimer
     :initial-value="360500"
@@ -49,6 +52,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 ```
 
 ####2. Fully customized (timer mode)
+
 ```
 <CircularCountDownTimer
         :initial-value="360500"
@@ -73,9 +77,10 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 ></CircularCountDownTimer>
 ```
 
-![fully customized timer mode](https://raw.githubusercontent.com/aanoorzaie/vue-circular-count-down-timer/raw/1.png)
+![fully customized timer mode](raw/1.png)
 
 ####3. Single mode
+
 ```
 <CircularCountDownTimer
         :initial-value="200"
@@ -83,10 +88,11 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 ></CircularCountDownTimer>
 ```
 
-![single mode](https://raw.githubusercontent.com/aanoorzaie/vue-circular-count-down-timer/raw/2.png)
+![single mode](raw/2.png)
 
 
 ####4. Listen to events
+
 ````
 <CircularCountDownTimer
         :initial-value="200"
