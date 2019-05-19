@@ -11,7 +11,7 @@ After installation, import component:
 import CircularCountDownTimer from "vue-circular-count-down-timer";
 ```
 
-###Documentation
+### Documentation
 
 | Props | Description |
 | --- | --- |
@@ -43,7 +43,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 
 ### Usage
 
-####1. basic timer
+#### 1. basic timer
 
 ```
 <CircularCountDownTimer
@@ -51,7 +51,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 ></CircularCountDownTimer>
 ```
 
-####2. Fully customized (timer mode)
+#### 2. Fully customized (timer mode)
 
 ```
 <CircularCountDownTimer
@@ -79,7 +79,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 
 ![fully customized timer mode](raw/1.png)
 
-####3. Single mode
+#### 3. Single mode
 
 ```
 <CircularCountDownTimer
@@ -91,7 +91,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 ![single mode](raw/2.png)
 
 
-####4. Listen to events
+#### 4. Listen to events
 
 ````
 <CircularCountDownTimer
