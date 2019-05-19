@@ -8,7 +8,7 @@ npm install vuejs-circular-count-down-timer
 ```
 After installation, import component:
 ```
-import CircularCountDownTimer from "vue-circular-count-down-timer";
+import CircularCountDownTimer from "vuejs-circular-count-down-timer";
 ```
 
 ### Documentation
