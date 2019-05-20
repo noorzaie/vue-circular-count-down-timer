@@ -38,12 +38,12 @@ import CircularCountDownTimer from "vuejs-circular-count-down-timer";
 
 | Events | Description |
 | --- | --- |
-| finish | Fires when counter reach zero. |
+| finish | Fires when counter reaches zero. |
 | update | Fires on each counting. |
 
 ### Usage
 
-#### 1. basic timer
+#### 1. Basic usage
 
 ```
 <CircularCountDownTimer
