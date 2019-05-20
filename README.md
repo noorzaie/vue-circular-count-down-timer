@@ -15,7 +15,7 @@ import CircularCountDownTimer from "vuejs-circular-count-down-timer";
 
 | Props | Description |
 | --- | --- |
-| initial_value | Initial value of timer, as seconds. (required) |
+| initial-value | Initial value of timer, as seconds. (required) |
 | stroke-width | Thickness of circle strokes in px. |
 | seconds-stroke-color | Color of stroke of seconds circle. |
 | minutes-stroke-color | Color of stroke of minutes circle. |
