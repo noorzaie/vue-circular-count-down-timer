@@ -1,21 +1,23 @@
 # vue-count-down-timer
+
 This is a count down timer for Vue js framework. This library supports two types of timers:
 1. Timer mode: Timer based on hour, minute and second.
 2. Single mode: Timber based on second (single circle without hours and minutes).
+
 ## Installation
 ```
-npm install vuejs-circular-count-down-timer
+npm install vue-circular-count-down-timer
 ```
 After installation, import component:
 ```
-import CircularCountDownTimer from "vuejs-circular-count-down-timer";
+import CircularCountDownTimer from "vue-circular-count-down-timer";
 ```
 
 ### Documentation
 
 | Props | Description |
 | --- | --- |
-| initial_value | Initial value of timer, as seconds. (required) |
+| initial-value | Initial value of timer, as seconds. (required) |
 | stroke-width | Thickness of circle strokes in px. |
 | seconds-stroke-color | Color of stroke of seconds circle. |
 | minutes-stroke-color | Color of stroke of minutes circle. |
@@ -38,12 +40,12 @@ import CircularCountDownTimer from "vuejs-circular-count-down-timer";
 
 | Events | Description |
 | --- | --- |
-| finish | Fires when counter reach zero. |
+| finish | Fires when counter reaches zero. |
 | update | Fires on each counting. |
 
 ### Usage
 
-#### 1. basic timer
+#### 1. Basic usage
 
 ```
 <CircularCountDownTimer

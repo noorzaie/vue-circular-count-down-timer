@@ -2,16 +2,16 @@
     <div
             id="wrapper"
             ref="wrapper"
-            :style="{width: 'auto', height: container_height+'px', boxSizing: 'border-box'}"
+            :style="{width: 'auto', height: container_height+'px', boxSizing: 'border-box', display: 'flex', justifyContent: 'center', 'alignItems': 'center'}"
     >
         <div
                 id="container"
-                :style="{width: container_width+'px', height: container_height+'px', paddingTop: padding+'px'}"
+                :style="{width: container_width+'px', height: container_height+'px', paddingTop: padding+'px', margin: '0 auto', boxSizing: 'border-box'}"
         >
             <div
                     v-if="!is_single && showHour"
                     class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px'}"
+                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr'}"
             >
                 <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * hours }}
@@ -49,7 +49,7 @@
             <div
                     v-if="!is_single && showMinute"
                     class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px'}"
+                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr'}"
             >
                 <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * minutes }}
@@ -87,7 +87,7 @@
             <div
                     v-if="showSecond"
                     class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px'}"
+                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr'}"
             >
                 <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * seconds }}
@@ -322,6 +322,7 @@
                             this.$emit('finish');
                         }
                         if(this.value <= 0 && !this.showNegatives){
+                            this.value = 0;
                             clearInterval(interval);
                         }
                         else{
@@ -339,22 +340,6 @@
 </script>
 
 <style scoped>
-    .item{
-        float: left;
-        direction: ltr;
-    }
-    #wrapper{
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    #container{
-        margin: 0 auto;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
     circle{
         -webkit-transition: all 0.5s ease;
         -moz-transition: all 0.5s ease;

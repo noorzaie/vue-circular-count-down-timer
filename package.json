@@ -1,6 +1,6 @@
 {
-  "name": "vuejs-circular-count-down-timer",
-  "version": "0.1.0",
+  "name": "vue-circular-count-down-timer",
+  "version": "1.0.2",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
