@@ -8,9 +8,10 @@ This is a count down timer for Vue js framework. This library supports two types
 ```
 npm install vue-circular-count-down-timer
 ```
-After installation, import component:
+After installation, import and registner the component:
 ```
 import CircularCountDownTimer from "vue-circular-count-down-timer";
+Vue.use(CircularCountDownTimer);
 ```
 
 ### Documentation
