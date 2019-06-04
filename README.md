@@ -8,9 +8,11 @@ This is a count down timer for Vue js framework. This library supports two types
 ```
 npm install vue-circular-count-down-timer
 ```
-After installation, import component:
+After installation, import component and register it in the main.js:
 ```
+import Vue from 'vue';
 import CircularCountDownTimer from "vue-circular-count-down-timer";
+Vue.use(CircularCountDownTimer);
 ```
 
 ### Documentation
@@ -37,6 +39,7 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 | show-negatives | To continue counting after reaching zero. |
 | steps | Number of steps in single mode usage. |
 | paused | To pause counting. |
+| notify-every | To determine interval of triggering update event. Possible values: second, minute, hour, none. minute and hour works just in timer mode. |
 
 | Events | Description |
 | --- | --- |
@@ -48,15 +51,15 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 #### 1. Basic usage
 
 ```
-<CircularCountDownTimer
+<circular-count-down-timer
     :initial-value="360500"
-></CircularCountDownTimer>
+></circular-count-down-timer>
 ```
 
 #### 2. Fully customized (timer mode)
 
 ```
-<CircularCountDownTimer
+<circular-count-down-timer
         :initial-value="360500"
         :stroke-width="5"
         :seconds-stroke-color="'#f00'"
@@ -76,7 +79,8 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
         :show-hour="true"
         :show-negatives="true"
         :paused="some_variable"
-></CircularCountDownTimer>
+        :notify-every="'minute'"
+></circular-count-down-timer>
 ```
 
 ![fully customized timer mode](raw/1.png)
@@ -84,10 +88,10 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 #### 3. Single mode
 
 ```
-<CircularCountDownTimer
+<circular-count-down-timer
         :initial-value="200"
         :steps="400"
-></CircularCountDownTimer>
+></circular-count-down-timer>
 ```
 
 ![single mode](raw/2.png)
@@ -96,11 +100,11 @@ import CircularCountDownTimer from "vue-circular-count-down-timer";
 #### 4. Listen to events
 
 ````
-<CircularCountDownTimer
+<circular-count-down-timer
         :initial-value="200"
         @finish="finished"
         @update="updated"
-></CircularCountDownTimer>
+></circular-count-down-timer>
 
 ...
 

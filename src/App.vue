@@ -1,26 +1,30 @@
 <template>
     <div id="app">
-        <CircularCountDownTimer
-                :initial-value="360500"
-                :stroke-width="5"
-                :seconds-stroke-color="'#f00'"
-                :minutes-stroke-color="'#0ff'"
-                :hours-stroke-color="'#0f0'"
-                :underneath-stroke-color="'lightgrey'"
-                :seconds-fill-color="'#00ffff66'"
-                :minutes-fill-color="'#00ff0066'"
-                :hours-fill-color="'#ff000066'"
-                :size="200"
-                :padding="14"
-                :hour-label="'hours'"
-                :minute-label="'minutes'"
-                :second-label="'seconds'"
-                :show-second="true"
-                :show-minute="true"
-                :show-hour="true"
-                :show-negatives="true"
-                :paused="some_variable"
-        ></CircularCountDownTimer>
+        <div style="width: 1000px;">
+            <CircularCountDownTimer
+                    :initial-value="360550"
+                    :stroke-width="5"
+                    :seconds-stroke-color="'#f00'"
+                    :minutes-stroke-color="'#0ff'"
+                    :hours-stroke-color="'#0f0'"
+                    :underneath-stroke-color="'lightgrey'"
+                    :seconds-fill-color="'#00ffff66'"
+                    :minutes-fill-color="'#00ff0066'"
+                    :hours-fill-color="'#ff000066'"
+                    :size="200"
+                    :padding="14"
+                    :hour-label="'hours'"
+                    :minute-label="'minutes'"
+                    :second-label="'seconds'"
+                    :show-second="true"
+                    :show-minute="true"
+                    :show-hour="true"
+                    :show-negatives="true"
+                    :paused="some_variable"
+                    :notify-every="'minute'"
+                    @update="updated"
+            ></CircularCountDownTimer>
+        </div>
         <!--<CircularCountDownTimer
                 :initial-value="200"
                 :steps="400"
@@ -42,7 +46,8 @@
         },
         data(){
             return {
-                pause: false
+                pause: false,
+                some_variable: false
             }
         },
         mounted(){
@@ -71,5 +76,6 @@
         color: #2c3e50;
         margin-top: 60px;
         background-color: aliceblue;
+        overflow: scroll;
     }
 </style>

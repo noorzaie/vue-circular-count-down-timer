@@ -11,7 +11,7 @@
             <div
                     v-if="!is_single && showHour"
                     class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr'}"
+                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
             >
                 <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * hours }}
@@ -49,7 +49,7 @@
             <div
                     v-if="!is_single && showMinute"
                     class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr'}"
+                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
             >
                 <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * minutes }}
@@ -87,7 +87,7 @@
             <div
                     v-if="showSecond"
                     class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr'}"
+                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
             >
                 <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * seconds }}
@@ -208,6 +208,11 @@
             paused: {
                 type: Boolean,
                 default: false
+            },
+            notifyEvery: {
+                type: String,
+                default: 'second',
+                validator: (val) => ['second', 'minute', 'hour', 'none'].includes(val)
             }
         },
         data() {
@@ -216,6 +221,7 @@
                 value: this.initialValue,
                 labelFontRatio: 0.15,
                 numberFontRatio: 0.2,
+                baseTime: 0
             };
         },
         computed: {
@@ -309,28 +315,49 @@
                 return this.circle_size * this.numberFontRatio;
             }
         },
+        methods: {
+            notifyChange() {
+                let output = {value: this.value};
+                if(!this.is_single){
+                    output = {...output, ...{seconds: this.seconds, minutes: this.minutes, hours: this.hours}}
+                }
+                this.$emit('update', output);
+            }
+        },
+        watch: {
+            seconds(){
+                if(this.notifyEvery === 'second'){
+                    this.notifyChange();
+                }
+            },
+            minutes(){
+                if(this.notifyEvery === 'minute' && !this.is_single){
+                    this.notifyChange();
+                }
+            },
+            hours(){
+                if(this.notifyEvery === 'hour' && !this.is_single){
+                    this.notifyChange();
+                }
+            }
+        },
         mounted: function () {
             this.$nextTick(() => {
+                this.baseTime = Date.now();
                 this.isMounted = true;
                 if(this.value){
                     const interval = setInterval(function () {
                         if(this.paused){
                             return;
                         }
-                        this.value -= 1;
+                        const delta = Math.floor((Date.now() - this.baseTime) / 1000);
+                        this.value = this.initialValue - delta;
                         if(this.value === 0){
                             this.$emit('finish');
                         }
                         if(this.value <= 0 && !this.showNegatives){
                             this.value = 0;
                             clearInterval(interval);
-                        }
-                        else{
-                            let output = {value: this.value};
-                            if(!this.is_single){
-                                output = {...output, ...{seconds: this.seconds, minutes: this.minutes, hours: this.hours}}
-                            }
-                            this.$emit('update', output);
                         }
                     }.bind(this), 1000);
                 }
