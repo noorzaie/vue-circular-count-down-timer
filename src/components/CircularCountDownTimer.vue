@@ -322,6 +322,10 @@
                     output = {...output, ...{seconds: this.seconds, minutes: this.minutes, hours: this.hours}}
                 }
                 this.$emit('update', output);
+            },
+            updateTime(seconds){
+                if(this.value)
+                    this.value+=seconds
             }
         },
         watch: {
@@ -343,15 +347,14 @@
         },
         mounted: function () {
             this.$nextTick(() => {
-                this.baseTime = Date.now();
                 this.isMounted = true;
                 if(this.value){
                     const interval = setInterval(function () {
                         if(this.paused){
                             return;
                         }
-                        const delta = Math.floor((Date.now() - this.baseTime) / 1000);
-                        this.value = this.initialValue - delta;
+                        const delta = 1
+                        this.value -= delta;
                         if(this.value === 0){
                             this.$emit('finish');
                         }

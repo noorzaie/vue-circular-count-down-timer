@@ -2,6 +2,7 @@
     <div id="app">
         <div style="width: 1000px;">
             <CircularCountDownTimer
+                    ref="countDown"
                     :initial-value="360550"
                     :stroke-width="5"
                     :seconds-stroke-color="'#f00'"
@@ -25,6 +26,7 @@
                     @update="updated"
             ></CircularCountDownTimer>
         </div>
+        <button @click="updateTime">Update</button>
         <!--<CircularCountDownTimer
                 :initial-value="200"
                 :steps="400"
@@ -56,6 +58,9 @@
             }.bind(this), 30000);
         },
         methods: {
+            updateTime(){
+                this.$refs.countDown.updateTime(10)
+            },
             finished: () => {
                 console.log('finished')
             },
