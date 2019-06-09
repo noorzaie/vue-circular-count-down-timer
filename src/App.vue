@@ -10,6 +10,7 @@
                     :hours-stroke-color="'#0f0'"
                     :underneath-stroke-color="'lightgrey'"
                     :seconds-fill-color="'#00ffff66'"
+                    :seconds-fill-opacity="1"
                     :minutes-fill-color="'#00ff0066'"
                     :hours-fill-color="'#ff000066'"
                     :size="200"

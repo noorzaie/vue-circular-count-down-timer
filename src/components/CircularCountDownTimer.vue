@@ -104,6 +104,7 @@
                             :stroke-width="strokeWidth"
                             :stroke="underneathStrokeColor"
                             :fill="secondsFillColor"
+                            :fill-opacity="secondsFillOpacity"
                     />
                     <circle
                             :transform="'rotate(-90, '+cx+', '+cy+')'"
@@ -157,6 +158,11 @@
                 type: String,
                 default: 'none'
             },
+            secondsFillOpacity: {
+                type: Number,
+                default: 1
+            },
+
             minutesFillColor: {
                 type: String,
                 default: 'none'
