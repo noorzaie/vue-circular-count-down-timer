@@ -332,6 +332,9 @@
             updateTime(seconds){
                 if(this.value)
                     this.value+=seconds
+                if(this.value<0){
+                    this.$emit('finish')
+                }
             }
         },
         watch: {
