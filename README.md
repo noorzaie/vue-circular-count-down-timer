@@ -46,6 +46,11 @@ Vue.use(CircularCountDownTimer);
 | finish | Fires when counter reaches zero. |
 | update | Fires on each counting. |
 
+| Method | Description |
+| --- | --- |
+| updateTime(seconds) | Adds the amount of seconds to the countdown value. Works with positive or negative integers. |
+
+
 ### Usage
 
 #### 1. Basic usage
@@ -114,6 +119,26 @@ methods: {
     },
     updated: (status) => {
         console.log(status);    //{"value": 144, "seconds": 24, "minutes": 2, "hours": 0}
+    }
+}
+````
+
+
+#### 5. Add 10 seconds to the timer
+
+````
+<circular-count-down-timer
+        :initial-value="200"
+        @finish="finished"
+        @update="updated"
+        ref="countdown"
+></circular-count-down-timer>
+
+...
+
+methods: {
+    updateCountdown: () => {
+        this.$refs.countdown.updateTime(10)
     }
 }
 ````
