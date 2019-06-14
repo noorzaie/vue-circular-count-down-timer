@@ -325,7 +325,7 @@
             },
             updateTime(seconds){
                 if(this.value)
-                    this.value+=seconds
+                    this.value+=seconds;
                 if(this.value<0){
                     this.$emit('finish')
                 }
@@ -356,7 +356,7 @@
                         if(this.paused){
                             return;
                         }
-                        const delta = 1
+                        const delta = 1;
                         this.value -= delta;
                         if(this.value === 0){
                             this.$emit('finish');
