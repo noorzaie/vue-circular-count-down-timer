@@ -1,4 +1,4 @@
-### 👉 please don't forget to hit the star button
+### ⭐️ Please don't forget to hit the star button
 
 # vue-count-down-timer
 
