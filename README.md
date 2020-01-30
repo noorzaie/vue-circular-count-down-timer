@@ -1,3 +1,5 @@
+### 👉 please don't forget to hit the star button
+
 # vue-count-down-timer
 
 This is a count down timer for Vue js framework. This library supports two types of timers:
