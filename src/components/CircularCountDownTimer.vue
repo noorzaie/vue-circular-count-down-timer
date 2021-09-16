@@ -89,7 +89,8 @@
                     class="item"
                     :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
             >
-                <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
+                <div v-if="showValue"
+                    :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
                     {{ factor * seconds }}
                 </div>
                 <svg
@@ -177,6 +178,10 @@
                 type: String,
                 default: "hours"
             },
+            increment: {
+                type: Number,
+                default: 1
+            },
             minuteLabel: {
                 type: String,
                 default: "minutes"
@@ -201,6 +206,10 @@
                 type: Boolean,
                 default: false
             },
+            showValue: {
+                type: Boolean,
+                default: true
+            },
             steps: {
                 type: Number,
                 default: undefined
@@ -213,7 +222,7 @@
                 type: String,
                 default: 'second',
                 validator: (val) => ['second', 'minute', 'hour', 'none'].includes(val)
-            }
+            },
         },
         data() {
             return {
@@ -356,7 +365,7 @@
                         if(this.paused){
                             return;
                         }
-                        const delta = 1;
+                        const delta = 1 * this.increment;
                         this.value -= delta;
                         if(this.value === 0){
                             this.$emit('finish');
@@ -365,7 +374,7 @@
                             this.value = 0;
                             clearInterval(interval);
                         }
-                    }.bind(this), 1000);
+                    }.bind(this), 1000 * this.increment);
                 }
             });
         }
