@@ -1,71 +1,71 @@
 {
-  "name": "vue-circular-count-down-timer",
-  "version": "1.0.4",
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build-bundle": "vue-cli-service build --target lib --name vue-count-down-timer ./src/components/index.js"
-  },
-  "dependencies": {
-    "core-js": "^2.6.5",
-    "vue": "^2.6.10"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-plugin-eslint": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.5.21"
-  },
-  "main": "./dist/vue-count-down-timer.common.js",
-  "files": [
-    "dist/*",
-    "src/*",
-    "public/*",
-    "*.json",
-    "*.js"
-  ],
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    "name": "vue-circular-count-down-timer",
+    "version": "2.0.0",
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint",
+        "build-bundle": "vue-cli-service build --target lib --name vue-count-down-timer ./src/components/index.js"
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
+    "dependencies": {
+        "core-js": "^2.6.5",
+        "vue": "^2.6.14"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^3.7.0",
+        "@vue/cli-plugin-eslint": "^3.7.0",
+        "@vue/cli-service": "^3.7.0",
+        "babel-eslint": "^10.0.1",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.0.0",
+        "vue-template-compiler": "^2.5.21"
+    },
+    "main": "./dist/vue-count-down-timer.common.js",
+    "files": [
+        "dist/*",
+        "src/*",
+        "public/*",
+        "*.json",
+        "*.js"
     ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/noorzaie/vue-circular-count-down-timer.git"
-  },
-  "keywords": [
-    "vue",
-    "vuejs",
-    "javascript",
-    "timer",
-    "countdown",
-    "circular"
-  ],
-  "author": {
-    "email": "aanoorzaie@gmail.com",
-    "name": "AzizAhmad Noorzaie"
-  },
-  "license": "MIT"
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "plugin:vue/essential",
+            "eslint:recommended"
+        ],
+        "rules": {},
+        "parserOptions": {
+            "parser": "babel-eslint"
+        }
+    },
+    "postcss": {
+        "plugins": {
+            "autoprefixer": {}
+        }
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/noorzaie/vue-circular-count-down-timer.git"
+    },
+    "keywords": [
+        "vue",
+        "vuejs",
+        "javascript",
+        "timer",
+        "countdown",
+        "circular"
+    ],
+    "author": {
+        "email": "aanoorzaie@gmail.com",
+        "name": "AzizAhmad Noorzaie"
+    },
+    "license": "MIT"
 }
