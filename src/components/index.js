@@ -1,4 +1,4 @@
-import CircularCountDownTimer from './CircularCountDownTimer'
+import CircularCountDownTimer from './CircularCountDownTimer';
 
 export default {
     install(Vue) {
