@@ -51,7 +51,7 @@ export default {
 		},
 		stopValue: {	// { '1': 0, '2': 1 }
 			type: Object,
-			required: true
+			default: () => ({})
 		},
 		triggerUpdate: {
 			type: Boolean,
@@ -143,14 +143,18 @@ export default {
 			}
 		},
 		shouldStop () {
-			let stop = true;
-			for (const id in this.stopValue) {
-				if (this.values[id].value !== this.stopValue[id]) {
-					stop = false;
-					break;
+			if (Object.keys(this.stopValue) > 0) {
+				let stop = true;
+				for (const id in this.stopValue) {
+					if (this.values[id].value !== this.stopValue[id]) {
+						stop = false;
+						break;
+					}
 				}
+				return stop;
+			} else {
+				return false;
 			}
-			return stop;
 		},
 		notifyUpdateValues () {
 			if (this.triggerUpdate) {
