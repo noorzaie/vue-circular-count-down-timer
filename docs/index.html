@@ -7,14 +7,43 @@
 </head>
 <body>
 	<div id="app">
-		{{ message }}
+		<circular-count-down-timer
+			:container-classes="[ 'container' ]"
+			:circles="circles"
+			:interval="1000"
+			:main-circle-id="'1'"
+			:stop-value="{ '1': 3 }"
+			:size="180"
+		/>
 	</div>
 
 	<script>
+		const CircularCountDownTimer = require('../src/components/CircularCountDownTimer');
+
 		var app = new Vue({
 			el: '#app',
+			components: { CircularCountDownTimer },
 			data: {
-				message: 'Hello Vue!'
+				circles: [
+					{
+						id: '1',
+						classList: [ 'item' ],
+						startValue: -2,
+						value: 1,
+						// size: 200,
+						strokeWidth: 10,
+						// strokeColor: '#db47a0',
+						underneathStrokeColor: '#eee',
+						// fillColor: '#fff0a0',
+						valueFontSize: 30,
+						labelFontSize: 30,
+						steps: 5,
+						stepLength: 1,
+						label: 'label',
+						labelPosition: 'bottom',
+						dependentCircles: [ '2' ]
+					}
+				]
 			}
 		})
 	</script>
