@@ -1,392 +1,215 @@
 <template>
-    <div
-            id="wrapper"
-            ref="wrapper"
-            :style="{width: 'auto', height: container_height+'px', boxSizing: 'border-box', display: 'flex', justifyContent: 'center', 'alignItems': 'center'}"
-    >
-        <div
-                id="container"
-                :style="{width: container_width+'px', height: container_height+'px', paddingTop: padding+'px', margin: '0 auto', boxSizing: 'border-box'}"
-        >
-            <div
-                    v-if="!is_single && showHour"
-                    class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
-            >
-                <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
-                    {{ factor * hours }}
-                </div>
-                <svg
-                        :width="inner_size"
-                        :height="inner_size"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <circle
-                            :r="r"
-                            :cy="cx"
-                            :cx="cy"
-                            :stroke-width="strokeWidth"
-                            :stroke="underneathStrokeColor"
-                            :fill="hoursFillColor"
-                    />
-                    <circle
-                            :transform="'rotate(-90, '+cx+', '+cy+')'"
-                            :style="{strokeDasharray: stroke_dasharray_hour, strokeDashoffset: stroke_dashoffset_hour}"
-                            class="circle_animation"
-                            :r="r"
-                            :cy="cx"
-                            :cx="cy"
-                            :stroke-width="strokeWidth"
-                            :stroke="hoursStrokeColor"
-                            fill="transparent"
-                    />
-                </svg>
-                <div v-if="hourLabel" ref="label" :style="{height: label_font_size+'px', fontSize: label_font_size+'px'}">
-                    {{hourLabel}}
-                </div>
-            </div>
-
-            <div
-                    v-if="!is_single && showMinute"
-                    class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
-            >
-                <div :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
-                    {{ factor * minutes }}
-                </div>
-                <svg
-                        :width="inner_size"
-                        :height="inner_size"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <circle
-                            :r="r"
-                            :cy="cx"
-                            :cx="cy"
-                            :stroke-width="strokeWidth"
-                            :stroke="underneathStrokeColor"
-                            :fill="minutesFillColor"
-                    />
-                    <circle
-                            :transform="'rotate(-90, '+cx+', '+cy+')'"
-                            :style="{strokeDasharray: stroke_dasharray_minute, strokeDashoffset: stroke_dashoffset_minute}"
-                            class="circle_animation"
-                            :r="r"
-                            :cy="cx"
-                            :cx="cy"
-                            :stroke-width="strokeWidth"
-                            :stroke="minutesStrokeColor"
-                            fill="transparent"
-                    />
-                </svg>
-                <div v-if="minuteLabel" :style="{fontSize: label_font_size+'px'}">
-                    {{minuteLabel}}
-                </div>
-            </div>
-
-            <div
-                    v-if="showSecond"
-                    class="item"
-                    :style="{width: inner_size+'px', height: inner_size+'px', paddingLeft: padding+'px', paddingRight: padding+'px', float: 'left', direction: 'ltr', position: 'relative'}"
-            >
-                <div v-if="showValue"
-                    :style="{width: inner_size+'px', height: inner_size+'px', lineHeight: inner_size+'px', position: 'absolute', fontSize: number_font_size+'px'}">
-                    {{ factor * seconds }}
-                </div>
-                <svg
-                        :width="inner_size"
-                        :height="inner_size"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <circle
-                            :r="r"
-                            :cy="cx"
-                            :cx="cy"
-                            :stroke-width="strokeWidth"
-                            :stroke="underneathStrokeColor"
-                            :fill="secondsFillColor"
-                    />
-                    <circle
-                            :transform="'rotate(-90, '+cx+', '+cy+')'"
-                            :style="{strokeDasharray: stroke_dasharray_second, strokeDashoffset: stroke_dashoffset_second}"
-                            class="circle_animation"
-                            :r="r"
-                            :cy="cx"
-                            :cx="cy"
-                            :stroke-width="strokeWidth"
-                            :stroke="secondsStrokeColor"
-                            fill="transparent"
-                    />
-                </svg>
-                <div v-if="secondLabel" :style="{fontSize: label_font_size+'px'}">
-                    {{secondLabel}}
-                </div>
-            </div>
-        </div>
-    </div>
+	<div :class="[ 'circles__container', ...containerClasses ]">
+		<div
+			v-for="(circle, index) in circles"
+			:key="index"
+			:class="[ 'circle__item', ...('classList' in circle ? circle.classList : circleClasses) ]"
+		>
+			<count-down-circle
+				v-bind="{
+					value: values[circle.id].value,
+					size: 'size' in circle ? circle.size : size,
+					strokeWidth: 'strokeWidth' in circle ? circle.strokeWidth : strokeWidth,
+					strokeColor: 'strokeColor' in circle ? circle.strokeColor : strokeColor,
+					underneathStrokeColor: 'underneathStrokeColor' in circle ? circle.underneathStrokeColor : underneathStrokeColor,
+					fillColor: 'fillColor' in circle ? circle.fillColor : fillColor,
+					valueFontSize: 'valueFontSize' in circle ? circle.valueFontSize : valueFontSize,
+					labelFontSize: 'labelFontSize' in circle ? circle.labelFontSize : labelFontSize,
+					labelPosition: 'labelPosition' in circle ? circle.labelPosition : labelPosition,
+					steps: circle.steps,
+					label: circle.label
+				}"
+			/>
+		</div>
+	</div>
 </template>
 
 <script>
-    export default {
-        props: {
-            initialValue: {
-                type: Number,
-                required: true,
-                default: 0
-            },
-            strokeWidth: {
-                type: Number,
-                default: 5
-            },
-            secondsStrokeColor: {
-                type: String,
-                default: "#acdb28"
-            },
-            minutesStrokeColor: {
-                type: String,
-                default: "#729adb"
-            },
-            hoursStrokeColor: {
-                type: String,
-                default: "#db47a0"
-            },
-            underneathStrokeColor: {
-                type: String,
-                default: "#eee"
-            },
-            secondsFillColor: {
-                type: String,
-                default: 'none'
-            },
-            minutesFillColor: {
-                type: String,
-                default: 'none'
-            },
-            hoursFillColor: {
-                type: String,
-                default: 'none'
-            },
-            size: {
-                type: Number,
-                default: 0
-            },
-            padding: {
-                type: Number,
-                default: 5
-            },
-            hourLabel: {
-                type: String,
-                default: "hours"
-            },
-            increment: {
-                type: Number,
-                default: 1
-            },
-            minuteLabel: {
-                type: String,
-                default: "minutes"
-            },
-            secondLabel: {
-                type: String,
-                default: "seconds"
-            },
-            showSecond: {
-                type: Boolean,
-                default: true
-            },
-            showMinute: {
-                type: Boolean,
-                default: true
-            },
-            showHour: {
-                type: Boolean,
-                default: true
-            },
-            showNegatives: {
-                type: Boolean,
-                default: false
-            },
-            showValue: {
-                type: Boolean,
-                default: true
-            },
-            steps: {
-                type: Number,
-                default: undefined
-            },
-            paused: {
-                type: Boolean,
-                default: false
-            },
-            notifyEvery: {
-                type: String,
-                default: 'second',
-                validator: (val) => ['second', 'minute', 'hour', 'none'].includes(val)
-            },
-        },
-        data() {
-            return {
-                isMounted: false,
-                value: this.initialValue,
-                labelFontRatio: 0.15,
-                numberFontRatio: 0.2,
-                baseTime: 0
-            };
-        },
-        computed: {
-            seconds_step() {
-                return this.is_single ? this.steps ? (Math.max(this.steps, this.initialValue)) : this.initialValue : 60
-            },
-            is_single() {
-                return this.steps !== undefined || (!this.showHour && !this.showMinute)
-            },
-            hours() {
-                return Math.floor(Math.abs(this.value) / 3600);
-            },
-            minutes() {
-                return Math.floor((Math.abs(this.value) - this.hours * 3600) / 60);
-            },
-            seconds() {
-                return this.is_single ? this.value : Math.abs(this.value) % 60;
-            },
-            factor() {
-                return this.value >= 0 ? 1 : -1
-            },
-            circle_length() {
-                return 2 * Math.PI * this.r
-            },
-            hour_step_length() {
-                return this.circle_length / 24
-            },
-            minute_step_length() {
-                return this.circle_length / 60
-            },
-            second_step_length() {
-                return this.circle_length / this.seconds_step
-            },
-            stroke_dasharray_hour() {
-                return this.circle_length
-            },
-            stroke_dasharray_minute() {
-                return this.circle_length
-            },
-            stroke_dasharray_second() {
-                return this.circle_length
-            },
-            stroke_dashoffset_hour(){
-                return this.circle_length - this.hours * this.hour_step_length;
-            },
-            stroke_dashoffset_minute(){
-                return this.circle_length - this.minutes * this.minute_step_length;
-            },
-            stroke_dashoffset_second(){
-                return this.circle_length - this.seconds * this.second_step_length;
-            },
-            cx(){
-                return this.inner_size/2;
-            },
-            cy(){
-                return this.inner_size/2;
-            },
-            r(){
-                return (this.inner_size - this.strokeWidth)/2;
-            },
-            inner_size(){
-                return this.circle_size - this.padding*2;
-            },
-            circle_size(){
-                const size = this.size === 0 && this.isMounted ? this.$refs.wrapper.parentElement.clientHeight : this.size;
-                return this.has_label ? size - size * this.labelFontRatio : size;
-            },
-            container_height(){
-                return this.size === 0 && this.isMounted ? this.$refs.wrapper.parentElement.clientHeight : this.size;
-            },
-            container_width(){
-                let circles = 0;
-                if(this.showSecond){
-                    circles++;
-                }
-                if(!this.is_single && this.showMinute){
-                    circles++;
-                }
-                if(!this.is_single && this.showHour){
-                    circles++;
-                }
-                return this.inner_size * circles + this.padding * (circles * 2);
-            },
-            has_label(){
-                return this.hourLabel !== "" || this.minuteLabel !== "" || this.secondLabel !== "" ;
-            },
-            label_font_size(){
-                return this.circle_size * this.labelFontRatio;
-            },
-            number_font_size(){
-                return this.circle_size * this.numberFontRatio;
-            }
-        },
-        methods: {
-            notifyChange() {
-                let output = {value: this.value};
-                if(!this.is_single){
-                    output = {...output, ...{seconds: this.seconds, minutes: this.minutes, hours: this.hours}}
-                }
-                this.$emit('update', output);
-            },
-            updateTime(seconds){
-                if(this.value)
-                    this.value+=seconds;
-                if(this.value<0){
-                    this.$emit('finish')
-                }
-            }
-        },
-        watch: {
-            seconds(){
-                if(this.notifyEvery === 'second'){
-                    this.notifyChange();
-                }
-            },
-            minutes(){
-                if(this.notifyEvery === 'minute' && !this.is_single){
-                    this.notifyChange();
-                }
-            },
-            hours(){
-                if(this.notifyEvery === 'hour' && !this.is_single){
-                    this.notifyChange();
-                }
-            }
-        },
-        mounted: function () {
-            this.$nextTick(() => {
-                this.isMounted = true;
-                if(this.value){
-                    const interval = setInterval(function () {
-                        if(this.paused){
-                            return;
-                        }
-                        const delta = 1 * this.increment;
-                        this.value -= delta;
-                        if(this.value === 0){
-                            this.$emit('finish');
-                        }
-                        if(this.value <= 0 && !this.showNegatives){
-                            this.value = 0;
-                            clearInterval(interval);
-                        }
-                    }.bind(this), 1000 * this.increment);
-                }
-            });
-        }
-    }
+import CountDownCircle from '@/components/CountDownCircle';
+
+let expected;
+
+export default {
+	name: 'CircularCountDownTimer',
+	components: { CountDownCircle },
+	props: {
+		containerClasses: {
+			type: Array,
+			default: () => []
+		},
+		circleClasses: {
+			type: Array,
+			default: () => []
+		},
+		interval: {
+			type: Number,
+			default: 1000
+		},
+		mainCircleId: {
+			type: [ String, Number ],
+			required: true
+		},
+		stopValue: {	// { '1': 0, '2': 1 }
+			type: Object,
+			required: true
+		},
+		triggerUpdate: {
+			type: Boolean,
+			default: true
+		},
+		// Circle props
+		size: {
+			type: Number,
+			default: 0
+		},
+		strokeWidth: {
+			type: Number,
+			default: 10
+		},
+		strokeColor: {
+			type: String,
+			default: '#9d989b'
+		},
+		underneathStrokeColor: {
+			type: String,
+			default: '#eee'
+		},
+		fillColor: {
+			type: String,
+			default: '#ffffff'
+		},
+		valueFontSize: {
+			type: Number,
+			default: 20
+		},
+		labelFontSize: {
+			type: Number,
+			default: 15
+		},
+		labelPosition: {
+			validator: function (value) {
+				return [ 'top', 'bottom' ].indexOf(value) !== -1;
+			},
+			default: 'bottom'
+		},
+		circles: {
+			type: Array,
+			default: () => []
+		}
+	},
+	data () {
+		return {
+			// circlesLocal: getCirclesData({ circleClasses: this.circleClasses }, this.circles),
+			values: getCircleValues(this.circles),
+			timeOutId: undefined
+		};
+	},
+	watch: {
+		circles () {
+			this.values = getCircleValues(this.circles);
+			this.startTimer();
+		}
+	},
+	methods: {
+		nextStep () {
+			this.updateCircleValue(this.mainCircleId);
+			this.notifyUpdateValues();
+
+			if (!this.shouldStop()) {
+				const dt = Date.now() - expected;
+				expected += this.interval;
+				this.timeOutId = setTimeout(this.nextStep, Math.max(0, this.interval - dt));
+			} else {
+				this.$emit('finished');
+			}
+		},
+		updateCircleValue (circleId) {
+			const circle = this.values[circleId];
+
+			if (
+				circle.stepLength > 0 && circle.value + circle.stepLength >= circle.steps
+			) {
+				circle.value = (circle.value + circle.stepLength) % circle.steps + circle.startValue;
+				for (const dc of circle.dependentCircles) {
+					this.updateCircleValue(dc);
+				}
+			} else if (circle.stepLength < 0 && circle.value + circle.stepLength < circle.startValue) {
+				circle.value = (circle.value + circle.stepLength) % circle.steps + circle.steps;
+				for (const dc of circle.dependentCircles) {
+					this.updateCircleValue(dc);
+				}
+			} else {
+				circle.value += circle.stepLength;
+			}
+		},
+		shouldStop () {
+			let stop = true;
+			for (const id in this.stopValue) {
+				if (this.values[id].value !== this.stopValue[id]) {
+					stop = false;
+					break;
+				}
+			}
+			return stop;
+		},
+		notifyUpdateValues () {
+			if (this.triggerUpdate) {
+				const output = {};
+				for (const id in this.values) {
+					output[id] = this.values[id].value;
+				}
+				this.$emit('update', output);
+			}
+		},
+		getCircleProps (circle) {
+			return {
+				value: circle.value,
+				size: circle.size,
+				strokeWidth: circle.strokeWidth,
+				strokeColor: circle.strokeColor,
+				underneathStrokeColor: circle.underneathStrokeColor,
+				fillColor: circle.fillColor,
+				valueFontSize: circle.valueFontSize,
+				labelFontSize: circle.labelFontSize,
+				steps: circle.steps,
+				label: circle.label,
+				labelPosition: circle.labelPosition
+			};
+		},
+		startTimer () {
+			clearTimeout(this.timeOutId);
+			expected = Date.now() + this.interval;
+			this.timeOutId = setTimeout(this.nextStep, this.interval);
+		}
+	},
+	mounted () {
+		this.$nextTick(this.startTimer);
+	}
+};
+
+const getCircleValues = (circles) => {
+	const values = {};
+	for (const circle of circles) {
+		values[circle.id] = {
+			value: circle.value,
+			stepLength: circle.stepLength,
+			steps: circle.steps,
+			startValue: circle.startValue,
+			dependentCircles: circle.dependentCircles
+		};
+	}
+	return values;
+};
 </script>
 
 <style scoped>
-    circle{
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -ms-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-    }
+	.circles__container {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.circle__item {
+		margin: 5px;
+		height: 100%;
+	}
 </style>
