@@ -1,7 +1,11 @@
 <template>
 	<div id="app">
 		<h1>
-			Vue circular count down examples
+			Vue circular count down
+			<a
+				href="https://github.com/noorzaie/vue-circular-count-down-timer/tree/examples"
+				target="_blank"
+			>examples</a>
 		</h1>
 
 		<div
