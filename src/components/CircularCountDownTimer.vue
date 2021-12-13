@@ -3,7 +3,7 @@
 		<div
 			v-for="(circle, index) in circles"
 			:key="index"
-			:class="[ 'circle__item', ...('classList' in circle ? circle.classList : circleClasses) ]"
+			:class="[ 'circle__item', ...(circle.hasOwnProperty('classList') ? circle.classList : circleClasses) ]"
 		>
 			<count-down-circle
 				v-bind="{
@@ -27,8 +27,6 @@
 <script>
 import CountDownCircle from '@/components/CountDownCircle';
 
-let expected;
-
 export default {
 	name: 'CircularCountDownTimer',
 	components: { CountDownCircle },
@@ -49,7 +47,7 @@ export default {
 			type: [ String, Number ],
 			required: true
 		},
-		stopValue: {	// { '1': 0, '2': 1 }
+		stopConditions: {
 			type: Object,
 			default: () => ({})
 		},
@@ -101,7 +99,8 @@ export default {
 		return {
 			// circlesLocal: getCirclesData({ circleClasses: this.circleClasses }, this.circles),
 			values: getCircleValues(this.circles),
-			timeOutId: undefined
+			timeOutId: undefined,
+			expected: undefined
 		};
 	},
 	watch: {
@@ -116,8 +115,8 @@ export default {
 			this.notifyUpdateValues();
 
 			if (!this.shouldStop()) {
-				const dt = Date.now() - expected;
-				expected += this.interval;
+				const dt = Date.now() - this.expected;
+				this.expected += this.interval;
 				this.timeOutId = setTimeout(this.nextStep, Math.max(0, this.interval - dt));
 			} else {
 				this.$emit('finished');
@@ -143,10 +142,10 @@ export default {
 			}
 		},
 		shouldStop () {
-			if (Object.keys(this.stopValue) > 0) {
+			if (Object.keys(this.stopConditions).length > 0) {
 				let stop = true;
-				for (const id in this.stopValue) {
-					if (this.values[id].value !== this.stopValue[id]) {
+				for (const id in this.stopConditions) {
+					if (this.values[id].value !== this.stopConditions[id]) {
 						stop = false;
 						break;
 					}
@@ -182,7 +181,7 @@ export default {
 		},
 		startTimer () {
 			clearTimeout(this.timeOutId);
-			expected = Date.now() + this.interval;
+			this.expected = Date.now() + this.interval;
 			this.timeOutId = setTimeout(this.nextStep, this.interval);
 		}
 	},
@@ -195,11 +194,11 @@ const getCircleValues = (circles) => {
 	const values = {};
 	for (const circle of circles) {
 		values[circle.id] = {
-			value: circle.value,
-			stepLength: circle.stepLength,
+			value: circle.value || 0,
+			stepLength: circle.stepLength || 1,
 			steps: circle.steps,
-			startValue: circle.startValue,
-			dependentCircles: circle.dependentCircles
+			startValue: circle.startValue || 0,
+			dependentCircles: circle.dependentCircles || []
 		};
 	}
 	return values;

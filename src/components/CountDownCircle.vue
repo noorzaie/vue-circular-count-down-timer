@@ -151,9 +151,18 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		position: relative;
 	}
 
 	.circle__value {
 		position: absolute;
+	}
+
+	circle {
+		-webkit-transition: all 0.5s ease;
+		-moz-transition: all 0.5s ease;
+		-ms-transition: all 0.5s ease;
+		-o-transition: all 0.5s ease;
+		transition: all 0.5s ease;
 	}
 </style>
