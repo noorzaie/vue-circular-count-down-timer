@@ -11,3 +11,4 @@ docs/_book
 test/
 
 babel.config.js
+vue.config.js
