@@ -16,6 +16,7 @@
 					valueFontSize: 'valueFontSize' in circle ? circle.valueFontSize : valueFontSize,
 					labelFontSize: 'labelFontSize' in circle ? circle.labelFontSize : labelFontSize,
 					labelPosition: 'labelPosition' in circle ? circle.labelPosition : labelPosition,
+					showValue: 'showValue' in circle ? circle.showValue : showValue,
 					steps: circle.steps,
 					label: circle.label
 				}"
@@ -52,6 +53,10 @@ export default {
 			default: () => ({})
 		},
 		triggerUpdate: {
+			type: Boolean,
+			default: true
+		},
+		showValue: {
 			type: Boolean,
 			default: true
 		},

@@ -8,7 +8,10 @@
 			class="circle__circle"
 			:style="{ width: `${circleSize}px`, height: `${circleSize}px`, fontSize: `${valueFontSize}px` }"
 		>
-			<div class="circle__value">
+			<div
+				v-if="showValue"
+				class="circle__value"
+			>
 				{{ value }}
 			</div>
 			<svg
@@ -97,6 +100,10 @@ export default {
 				return [ 'top', 'bottom' ].indexOf(value) !== -1;
 			},
 			default: 'bottom'
+		},
+		showValue: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data () {

@@ -1,146 +1,92 @@
-### ⭐️ Please don't forget to hit the star button
+# Circular count down timer
+This library is a count down timer for Vue js framework. You can add as many as timers you need and fully customize them.
 
-# vue-count-down-timer
-
-This is a count down timer for Vue js framework. This library supports two types of timers:
-1. Timer mode: Timer based on hour, minute and second.
-2. Single mode: Timber based on second (single circle without hours and minutes).
+![fully customized timer mode](raw/1.png)
 
 ## Installation
 ```
 npm install vue-circular-count-down-timer
 ```
-After installation, import component and register it in the main.js:
+After installation, you can import component and register it in the main.js:
 ```
 import Vue from 'vue';
-import CircularCountDownTimer from "vue-circular-count-down-timer";
+import CircularCountDownTimer from 'vue-circular-count-down-timer';
 Vue.use(CircularCountDownTimer);
 ```
 
-### Documentation
+## Examples
+You can see some sample implementations in [this](https://github.com/noorzaie/vue-circular-count-down-timer/blob/examples/src/App.vue) page. You can also check out the live demo in [this](https://noorzaie.github.io/vue-circular-count-down-timer/) link.
 
-| Props | Description |
-| --- | --- |
-| initial-value | Initial value of timer, as seconds. (required) |
-| stroke-width | Thickness of circle strokes in px. |
-| seconds-stroke-color | Color of stroke of seconds circle. |
-| minutes-stroke-color | Color of stroke of minutes circle. |
-| hours-stroke-color | Color of stroke of hours circle. |
-| underneath-stroke-color | Color of stroke of empty parts of circles. |
-| seconds-fill-color | Color of background of seconds circle. |
-| minutes-fill-color | Color of background of minutes circle. |
-| hours-fill-color | Color of background of hours circle. |
-| size | Width and height of circles in px. |
-| padding | Space between circles in px. |
-| hour-label | Label of hours circle.  |
-| minute-label | Label of minutes circle. |
-| second-label | Label of seconds circle. |
-| show-second | Whether to show seconds circle or not. |
-| show-minute | Whether to show minutes circle or not. |
-| show-hour | Whether to show hours circle or not. |
-| show-negatives | To continue counting after reaching zero. |
-| steps | Number of steps in single mode usage. |
-| paused | To pause counting. |
-| notify-every | To determine interval of triggering update event. Possible values: second, minute, hour, none. minute and hour works just in timer mode. |
 
+## How to use
+You should pass an array of circles configurations to the component as props. You can also pass circle's configs directly to the component in order to apply them to all circles.
+
+Each circle must have an `id`, You should also determine id of main circle using `main-circle-id` props. This is the circle that counting starts with that.
+
+
+### Dependent circles
+By default, circles are independent of each other, if you want to make them related (minutes, seconds, ... for example) you should set id of related circles in `dependentCircles` field of a circle.
+
+
+### Circles arrangement
+By default, circles will be placed in a row (flex row), but if you want to change default arrangement, you can pass `container-classes` and `circle-classes` props and change their styles.
+
+
+### Stop conditions
+If you want to stop counting after reaching a certain value, you can use `stop-conditions` props. It is an object that contains values for each circle. For example consider you have two circles with id `circle-1` and `circle-2`, you want to stop counting when circle-1 reaches to 5 and circle-2 reaches to 12:
+```text
+stop-conditions = { 'circle-1': 5, 'circle-2': 12 }
+```
+After finish counting, a `finish` event will be emitted.
+
+
+### Incremental or decremental
+By default, counting is incremental, but if you want to make it counting downward, pass a negative value for `stepLength` field of circle.
+
+
+### Props
+| Props | Description | Possible values | Default value |
+| --- | --- | --- | --- |
+| circles | A list of circles config objects | [Circle](#circle-props) | [] |
+| interval | Timer change interval in ms | A positive number | 1000 |
+| main-circle-id | Id of the circle that counting should start with that | A string |  |
+| size | Width and height of circles in px | A positive number | Container size |
+| container-classes | A list of classes to set to circles container element | An array of strings | [] |
+| circle-classes | A list of classes to set to a circle element | An array of strings | [] |
+| stop-conditions | An object that contains values for each circle to stop timer after reaching to those values | An object with circle ids as key, and a number as value | {} |
+| trigger-update | Emit an event for each value change or not | A boolean | true |
+| stroke-width | Thickness of circle strokes in px | A positive number | 10 |
+| stroke-color | Circle stroke color | A color string | #9d989b |
+| underneath-stroke-color | Stroke color of empty parts of circles | A color string | #eee |
+| fill-color | Circle background color | A color string | #ffffff |
+| value-font-size | Font size of counter value in px | A positive number | 20 |
+| label-font-size | Font size of counter label in px | A positive number | 15 |
+| label-position | Position of counter label | bottom or top | bottom |
+| show-value | Whether to show counter value or not | A boolean | true |
+
+
+### Circle props
+| Props | Description | Possible values | Default value |
+| --- | --- | --- | --- |
+| id | Id of circle | A string |  |
+| classList | A list of classes to set to the circle element | An array of strings | [] |
+| startValue | The number to start counting from, after reaching to the en of circle | A number | zero |
+| value | Initial value of circle | A number | zero |
+| size | Width and height of circles in px | A positive number | Container size |
+| strokeWidth | Thickness of circle strokes in px | A positive number | 10 |
+| strokeColor | Circle stroke color | A color string | #9d989b |
+| underneathStrokeColor | Stroke color of empty parts of circle | A color string | #eee |
+| fillColor | Circle background color | A color string | #ffffff |
+| valueFontSize | Font size of counter value in px | A positive number | 20 |
+| labelFontSize | Position of counter label | A positive number | 15 |
+| steps | The number circle partitions | A positive number |  |
+| stepLength | How many step should be passed in each move | A non zero number | 1 |
+| label | Label of circle | A string |  |
+| labelPosition | Position of label | bottom or top | bottom |
+| showValue | Whether to show counter value or not | A boolean | true |
+
+### events
 | Events | Description |
 | --- | --- |
-| finish | Fires when counter reaches zero. |
+| finish | Fires when counter reaches to stop conditions. |
 | update | Fires on each counting. |
-
-| Method | Description |
-| --- | --- |
-| updateTime(seconds) | Adds the amount of seconds to the countdown value. Works with positive or negative integers. |
-
-
-### Usage
-
-#### 1. Basic usage
-
-```
-<circular-count-down-timer
-    :initial-value="360500"
-></circular-count-down-timer>
-```
-
-#### 2. Fully customized (timer mode)
-
-```
-<circular-count-down-timer
-        :initial-value="360500"
-        :stroke-width="5"
-        :seconds-stroke-color="'#f00'"
-        :minutes-stroke-color="'#0ff'"
-        :hours-stroke-color="'#0f0'"
-        :underneath-stroke-color="'lightgrey'"
-        :seconds-fill-color="'#00ffff66'"
-        :minutes-fill-color="'#00ff0066'"
-        :hours-fill-color="'#ff000066'"
-        :size="200"
-        :padding="4"
-        :hour-label="'hours'"
-        :minute-label="'minutes'"
-        :second-label="'seconds'"
-        :show-second="true"
-        :show-minute="true"
-        :show-hour="true"
-        :show-negatives="true"
-        :paused="some_variable"
-        :notify-every="'minute'"
-></circular-count-down-timer>
-```
-
-![fully customized timer mode](raw/1.png)
-
-#### 3. Single mode
-
-```
-<circular-count-down-timer
-        :initial-value="200"
-        :steps="400"
-></circular-count-down-timer>
-```
-
-![single mode](raw/2.png)
-
-
-#### 4. Listen to events
-
-````
-<circular-count-down-timer
-        :initial-value="200"
-        @finish="finished"
-        @update="updated"
-></circular-count-down-timer>
-
-...
-
-methods: {
-    finished: () => {
-        console.log('finished');
-    },
-    updated: (status) => {
-        console.log(status);    //{"value": 144, "seconds": 24, "minutes": 2, "hours": 0}
-    }
-}
-````
-
-
-#### 5. Add 10 seconds to the timer
-
-````
-<circular-count-down-timer
-        :initial-value="200"
-        @finish="finished"
-        @update="updated"
-        ref="countdown"
-></circular-count-down-timer>
-
-...
-
-methods: {
-    updateCountdown: () => {
-        this.$refs.countdown.updateTime(10)
-    }
-}
-````
