@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
+import CircularCountDownTimer from 'vue-circular-count-down-timer';
 import App from './App.vue';
-import CircularCountDownTimer from '../src/components/index.js';
+import './styles.css';
 
 createApp(App)
 	.use(CircularCountDownTimer)

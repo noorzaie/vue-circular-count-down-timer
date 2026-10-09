@@ -1,7 +1,7 @@
 {
     "name": "vue-circular-count-down-timer",
     "version": "3.0.0",
-    "description": "Fully customizable circular count down timer component for Vue 3",
+    "description": "Fully customizable circular count down timers for Vue 3: step timers, countdowns to a date or for a duration, and composables to build your own.",
     "license": "MIT",
     "author": {
         "email": "aanoorzaie@gmail.com",
@@ -17,20 +17,25 @@
     },
     "keywords": [
         "vue",
+        "vue3",
         "vuejs",
-        "javascript",
+        "component",
         "timer",
         "countdown",
+        "count-down",
         "circular",
-        "vue3",
-        "component"
+        "progress",
+        "clock",
+        "typescript"
     ],
     "main": "./dist/vue-circular-count-down-timer.umd.js",
     "module": "./dist/vue-circular-count-down-timer.mjs",
+    "types": "./dist/types/index.d.ts",
     "unpkg": "./dist/vue-circular-count-down-timer.umd.js",
     "jsdelivr": "./dist/vue-circular-count-down-timer.umd.js",
     "exports": {
         ".": {
+            "types": "./dist/types/index.d.ts",
             "import": "./dist/vue-circular-count-down-timer.mjs",
             "require": "./dist/vue-circular-count-down-timer.umd.js"
         },
@@ -39,24 +44,39 @@
     "files": [
         "dist"
     ],
+    "sideEffects": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview",
+        "build": "vite build && vue-tsc --build tsconfig.lib.json --force",
+        "build:playground": "vite build --mode playground",
+        "preview:playground": "vite preview --mode playground",
+        "deploy:playground": "npm run build:playground && node scripts/deploy-playground.mjs",
+        "type-check": "vue-tsc --build --force",
         "lint": "eslint .",
-        "prepublishOnly": "npm run lint && npm run build"
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "prepublishOnly": "npm run lint && npm run type-check && npm test && npm run build"
     },
     "peerDependencies": {
         "vue": "^3.5.0"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@types/node": "^24.19.2",
         "@vitejs/plugin-vue": "^6.0.9",
+        "@vue/test-utils": "^2.5.1",
+        "@vue/tsconfig": "^0.9.1",
         "eslint": "^10.12.0",
         "eslint-plugin-vue": "^10.11.1",
         "globals": "^17.13.0",
+        "highlight.js": "^11.12.0",
+        "jsdom": "^30.1.2",
+        "typescript": "~6.0.3",
+        "typescript-eslint": "^8.71.1",
         "vite": "^8.3.4",
         "vite-plugin-css-injected-by-js": "^5.0.2",
-        "vue": "^3.5.43"
+        "vitest": "^5.0.3",
+        "vue": "^3.5.43",
+        "vue-tsc": "^3.3.12"
     }
 }

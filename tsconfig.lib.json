@@ -1,0 +1,11 @@
+{
+	"extends": [ "@vue/tsconfig/tsconfig.dom.json", "@vue/tsconfig/tsconfig.lib.json" ],
+	"compilerOptions": {
+		"composite": true,
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.lib.tsbuildinfo",
+		"rootDir": "./src",
+		"outDir": "./dist/types",
+		"skipLibCheck": true
+	},
+	"include": [ "src/**/*.ts", "src/**/*.vue" ]
+}

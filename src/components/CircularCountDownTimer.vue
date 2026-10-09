@@ -1,206 +1,146 @@
 <template>
-	<div :class="[ 'circles__container', ...containerClasses ]">
+	<div
+		:class="[ 'circles__container', ...containerClasses ]"
+		role="timer"
+		:aria-label="accessibleLabel"
+	>
 		<div
-			v-for="(circle, index) in circles"
-			:key="index"
-			:class="[ 'circle__item', ...(circle.hasOwnProperty('classList') ? circle.classList : circleClasses) ]"
+			v-for="circle in circles"
+			:key="circle.id"
+			:class="[ 'circle__item', ...(circle.classList ?? circleClasses) ]"
 		>
-			<count-down-circle
-				v-bind="{
-					value: values[circle.id].value,
-					size: 'size' in circle ? circle.size : size,
-					strokeWidth: 'strokeWidth' in circle ? circle.strokeWidth : strokeWidth,
-					strokeColor: 'strokeColor' in circle ? circle.strokeColor : strokeColor,
-					underneathStrokeColor: 'underneathStrokeColor' in circle ? circle.underneathStrokeColor : underneathStrokeColor,
-					fillColor: 'fillColor' in circle ? circle.fillColor : fillColor,
-					valueFontSize: 'valueFontSize' in circle ? circle.valueFontSize : valueFontSize,
-					labelFontSize: 'labelFontSize' in circle ? circle.labelFontSize : labelFontSize,
-					labelPosition: 'labelPosition' in circle ? circle.labelPosition : labelPosition,
-					showValue: 'showValue' in circle ? circle.showValue : showValue,
-					steps: circle.steps,
-					label: circle.label
-				}"
-			/>
+			<CountDownCircle
+				v-bind="mergeAppearance(props, circle)"
+				:value="getValue(circle)"
+				:steps="circle.steps"
+				:label="circle.label"
+			>
+				<template
+					v-if="$slots.value"
+					#value="slotProps"
+				>
+					<slot
+						name="value"
+						v-bind="slotProps"
+						:circle="circle"
+					/>
+				</template>
+				<template
+					v-if="$slots.label"
+					#label="slotProps"
+				>
+					<slot
+						name="label"
+						v-bind="slotProps"
+						:circle="circle"
+					/>
+				</template>
+			</CountDownCircle>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed } from 'vue';
 import CountDownCircle from './CountDownCircle.vue';
+import { formatValue, mergeAppearance } from '../core/appearance';
+import { useStepTimer } from '../composables/useStepTimer';
+import type { CircleAppearance, CircleConfig, CircleId, CircleValues, StopConditions } from '../types';
 
-export default {
-	name: 'CircularCountDownTimer',
-	components: { CountDownCircle },
-	emits: [ 'update', 'finished' ],
-	props: {
-		containerClasses: {
-			type: Array,
-			default: () => []
-		},
-		circleClasses: {
-			type: Array,
-			default: () => []
-		},
-		interval: {
-			type: Number,
-			default: 1000
-		},
-		mainCircleId: {
-			type: [ String, Number ],
-			required: true
-		},
-		stopConditions: {
-			type: Object,
-			default: () => ({})
-		},
-		triggerUpdate: {
-			type: Boolean,
-			default: true
-		},
-		showValue: {
-			type: Boolean,
-			default: true
-		},
-		// Circle props
-		size: {
-			type: Number,
-			default: 0
-		},
-		strokeWidth: {
-			type: Number,
-			default: 10
-		},
-		strokeColor: {
-			type: String,
-			default: '#9d989b'
-		},
-		underneathStrokeColor: {
-			type: String,
-			default: '#eee'
-		},
-		fillColor: {
-			type: String,
-			default: '#ffffff'
-		},
-		valueFontSize: {
-			type: Number,
-			default: 20
-		},
-		labelFontSize: {
-			type: Number,
-			default: 15
-		},
-		labelPosition: {
-			validator: function (value) {
-				return [ 'top', 'bottom' ].indexOf(value) !== -1;
-			},
-			default: 'bottom'
-		},
-		circles: {
-			type: Array,
-			default: () => []
+defineOptions({ name: 'CircularCountDownTimer' });
+
+export interface CircularCountDownTimerProps extends CircleAppearance {
+	/** Circles configuration. */
+	circles?: CircleConfig[];
+	/** Id of the circle that moves on every step. */
+	mainCircleId: CircleId;
+	/** Time between steps in ms. */
+	interval?: number;
+	/** Circle values (by circle id) at which the timer stops. */
+	stopConditions?: StopConditions;
+	/** Emit an `update` event on every step. */
+	triggerUpdate?: boolean;
+	/** Start counting as soon as the component is mounted. */
+	autostart?: boolean;
+	containerClasses?: string[];
+	circleClasses?: string[];
+	/** Accessible name of the timer. Defaults to the values and labels of the circles. */
+	ariaLabel?: string;
+}
+
+const props = withDefaults(defineProps<CircularCountDownTimerProps>(), {
+	circles: () => [],
+	interval: 1000,
+	stopConditions: () => ({}),
+	triggerUpdate: true,
+	autostart: true,
+	containerClasses: () => [],
+	circleClasses: () => [],
+	size: 0,
+	strokeWidth: 10,
+	labelPosition: 'bottom',
+	showValue: true,
+	strokeLinecap: 'butt',
+	direction: 'clockwise'
+});
+
+const emit = defineEmits<{
+	/** Circle values after each step. */
+	update: [ values: CircleValues ];
+	/** The stop conditions were reached. */
+	finished: [];
+	started: [];
+	paused: [];
+	reset: [];
+}>();
+
+defineSlots<{
+	value?: (props: { value: number; formattedValue: string | number; steps: number; circle: CircleConfig }) => unknown;
+	label?: (props: { label: string; value: number; circle: CircleConfig }) => unknown;
+}>();
+
+const { state, isRunning, isFinished, start, pause, resume, reset } = useStepTimer({
+	circles: () => props.circles,
+	mainCircleId: () => props.mainCircleId,
+	interval: () => props.interval,
+	stopConditions: () => props.stopConditions,
+	autostart: () => props.autostart,
+	onUpdate: (values) => {
+		if (props.triggerUpdate) {
+			emit('update', values);
 		}
 	},
-	data () {
-		return {
-			// circlesLocal: getCirclesData({ circleClasses: this.circleClasses }, this.circles),
-			values: getCircleValues(this.circles),
-			timeOutId: undefined,
-			expected: undefined
-		};
-	},
-	watch: {
-		circles: {
-			// Also react to array mutations (push, splice, ...) like Vue 2 did, but not to nested circle props
-			deep: 1,
-			handler () {
-				this.values = getCircleValues(this.circles);
-				this.startTimer();
-			}
-		}
-	},
-	methods: {
-		nextStep () {
-			this.updateCircleValue(this.mainCircleId);
-			this.notifyUpdateValues();
+	onFinish: () => emit('finished'),
+	onStart: () => emit('started'),
+	onPause: () => emit('paused'),
+	onReset: () => emit('reset')
+});
 
-			if (!this.shouldStop()) {
-				const dt = Date.now() - this.expected;
-				this.expected += this.interval;
-				this.timeOutId = setTimeout(this.nextStep, Math.max(0, this.interval - dt));
-			} else {
-				this.$emit('finished');
-			}
-		},
-		updateCircleValue (circleId) {
-			const circle = this.values[circleId];
+const getValue = (circle: CircleConfig) => state.value[String(circle.id)]?.value ?? circle.value ?? 0;
 
-			if (
-				circle.stepLength > 0 && circle.value + circle.stepLength >= circle.steps
-			) {
-				circle.value = (circle.value + circle.stepLength) % circle.steps + circle.startValue;
-				for (const dc of circle.dependentCircles) {
-					this.updateCircleValue(dc);
-				}
-			} else if (circle.stepLength < 0 && circle.value + circle.stepLength < circle.startValue) {
-				circle.value = (circle.value + circle.stepLength) % circle.steps + circle.steps;
-				for (const dc of circle.dependentCircles) {
-					this.updateCircleValue(dc);
-				}
-			} else {
-				circle.value += circle.stepLength;
-			}
-		},
-		shouldStop () {
-			if (Object.keys(this.stopConditions).length > 0) {
-				let stop = true;
-				for (const id in this.stopConditions) {
-					if (this.values[id].value !== this.stopConditions[id]) {
-						stop = false;
-						break;
-					}
-				}
-				return stop;
-			} else {
-				return false;
-			}
-		},
-		notifyUpdateValues () {
-			if (this.triggerUpdate) {
-				const output = {};
-				for (const id in this.values) {
-					output[id] = this.values[id].value;
-				}
-				this.$emit('update', output);
-			}
-		},
-		startTimer () {
-			clearTimeout(this.timeOutId);
-			this.expected = Date.now() + this.interval;
-			this.timeOutId = setTimeout(this.nextStep, this.interval);
-		}
-	},
-	mounted () {
-		this.$nextTick(this.startTimer);
-	},
-	beforeUnmount () {
-		clearTimeout(this.timeOutId);
-	}
-};
+const values = computed<CircleValues>(() => Object.fromEntries(
+	props.circles.map(circle => [ String(circle.id), getValue(circle) ])
+));
 
-const getCircleValues = (circles) => {
-	const values = {};
-	for (const circle of circles) {
-		values[circle.id] = {
-			value: circle.value || 0,
-			stepLength: circle.stepLength || 1,
-			steps: circle.steps,
-			startValue: circle.startValue || 0,
-			dependentCircles: circle.dependentCircles || []
-		};
-	}
-	return values;
-};
+const accessibleLabel = computed(() => props.ariaLabel ?? props.circles
+	.map((circle) => {
+		const value = formatValue(getValue(circle), circle.formatValue ?? props.formatValue);
+		return circle.label ? `${value} ${circle.label}` : value;
+	})
+	.join(', '));
+
+defineExpose({
+	/** Starts the timer, or restarts it if it has finished. */
+	start,
+	pause,
+	/** Continues a paused timer. */
+	resume,
+	/** Stops the timer and restores the initial values. */
+	reset,
+	isRunning,
+	isFinished,
+	values
+});
 </script>
 
 <style scoped>
@@ -210,7 +150,7 @@ const getCircleValues = (circles) => {
 	}
 
 	.circle__item {
-		margin: 5px;
+		margin: var(--cdt-circle-margin, 5px);
 		height: 100%;
 	}
 </style>

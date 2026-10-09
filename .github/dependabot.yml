@@ -1,0 +1,15 @@
+# Dependabot is built into GitHub (no GitHub Actions needed): it opens pull requests for outdated packages.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      # One pull request for all minor and patch updates of the development tools
+      dev-dependencies:
+        dependency-type: development
+        update-types: [ minor, patch ]
+    commit-message:
+      prefix: deps

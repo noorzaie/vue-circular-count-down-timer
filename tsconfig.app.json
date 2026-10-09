@@ -1,0 +1,12 @@
+{
+	"extends": "@vue/tsconfig/tsconfig.dom.json",
+	"compilerOptions": {
+		"composite": true,
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+		"types": [ "vite/client" ],
+		"paths": {
+			"vue-circular-count-down-timer": [ "./src/index.ts" ]
+		}
+	},
+	"include": [ "src/**/*.ts", "src/**/*.vue", "playground/**/*.ts", "playground/**/*.vue", "tests/**/*.ts" ]
+}
