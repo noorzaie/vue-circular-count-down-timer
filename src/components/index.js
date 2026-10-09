@@ -1,9 +1,12 @@
-import CircularCountDownTimer from './CircularCountDownTimer';
+import CircularCountDownTimer from './CircularCountDownTimer.vue';
+import CountDownCircle from './CountDownCircle.vue';
+
+export { CircularCountDownTimer, CountDownCircle };
 
 export default {
-    install(Vue) {
-        // Let's register our component globally
-        // https://vuejs.org/v2/guide/components-registration.html
-        Vue.component("circular-count-down-timer", CircularCountDownTimer);
-    }
+	install (app) {
+		// Register the component globally
+		// https://vuejs.org/guide/components/registration.html#global-registration
+		app.component('CircularCountDownTimer', CircularCountDownTimer);
+	}
 };

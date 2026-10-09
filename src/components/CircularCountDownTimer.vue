@@ -26,11 +26,12 @@
 </template>
 
 <script>
-import CountDownCircle from '@/components/CountDownCircle';
+import CountDownCircle from './CountDownCircle.vue';
 
 export default {
 	name: 'CircularCountDownTimer',
 	components: { CountDownCircle },
+	emits: [ 'update', 'finished' ],
 	props: {
 		containerClasses: {
 			type: Array,
@@ -109,9 +110,13 @@ export default {
 		};
 	},
 	watch: {
-		circles () {
-			this.values = getCircleValues(this.circles);
-			this.startTimer();
+		circles: {
+			// Also react to array mutations (push, splice, ...) like Vue 2 did, but not to nested circle props
+			deep: 1,
+			handler () {
+				this.values = getCircleValues(this.circles);
+				this.startTimer();
+			}
 		}
 	},
 	methods: {
@@ -169,21 +174,6 @@ export default {
 				this.$emit('update', output);
 			}
 		},
-		getCircleProps (circle) {
-			return {
-				value: circle.value,
-				size: circle.size,
-				strokeWidth: circle.strokeWidth,
-				strokeColor: circle.strokeColor,
-				underneathStrokeColor: circle.underneathStrokeColor,
-				fillColor: circle.fillColor,
-				valueFontSize: circle.valueFontSize,
-				labelFontSize: circle.labelFontSize,
-				steps: circle.steps,
-				label: circle.label,
-				labelPosition: circle.labelPosition
-			};
-		},
 		startTimer () {
 			clearTimeout(this.timeOutId);
 			this.expected = Date.now() + this.interval;
@@ -192,6 +182,9 @@ export default {
 	},
 	mounted () {
 		this.$nextTick(this.startTimer);
+	},
+	beforeUnmount () {
+		clearTimeout(this.timeOutId);
 	}
 };
 

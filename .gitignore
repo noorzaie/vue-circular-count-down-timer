@@ -20,4 +20,3 @@ yarn-error.log*
 *.sln
 *.sw?
 
-src/App.vue

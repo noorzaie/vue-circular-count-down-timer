@@ -7,15 +7,49 @@ This library is a count down timer for Vue js framework. You can add as many as 
 ```
 npm install vue-circular-count-down-timer
 ```
-After installation, you can import component and register it in the main.js:
-```
-import Vue from 'vue';
+> Version 3 requires **Vue 3.5+**. If you are still on Vue 2, install version 2: `npm install vue-circular-count-down-timer@2`
+
+Register the component globally in your `main.js`:
+```js
+import { createApp } from 'vue';
 import CircularCountDownTimer from 'vue-circular-count-down-timer';
-Vue.use(CircularCountDownTimer);
+import App from './App.vue';
+
+createApp(App)
+    .use(CircularCountDownTimer)
+    .mount('#app');
 ```
 
+Or import it only in the components that use it:
+```vue
+<script setup>
+import { CircularCountDownTimer } from 'vue-circular-count-down-timer';
+</script>
+```
+
+Styles are bundled with the component, so there is no CSS file to import.
+
+You can also use it directly in the browser without a build step:
+```html
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/vue-circular-count-down-timer@3"></script>
+<script>
+    Vue.createApp({ /* ... */ })
+        .use(VueCircularCountDownTimer.default)
+        .mount('#app');
+</script>
+```
+
+### Migrating from version 2
+- Vue 3.5+ is required (Vue 2 reached end of life on December 31, 2023).
+- Register the plugin with `app.use()` instead of `Vue.use()`.
+- The component is also available as a named export: `import { CircularCountDownTimer } from 'vue-circular-count-down-timer'`.
+- Bundle files were renamed; if you imported files from `dist` directly, use the package root import instead.
+- The component props, circle options and events are unchanged.
+
+
 ## Examples
-You can see some sample implementations in [this](https://github.com/noorzaie/vue-circular-count-down-timer/blob/examples/src/App.vue) page. You can also check out the live demo in [this](https://noorzaie.github.io/vue-circular-count-down-timer/) link.
+You can see some sample implementations in [this](https://github.com/noorzaie/vue-circular-count-down-timer/blob/master/playground/App.vue) page. You can also check out the live demo in [this](https://noorzaie.github.io/vue-circular-count-down-timer/) link.
 
 
 ## How to use
@@ -37,7 +71,7 @@ If you want to stop counting after reaching a certain value, you can use `stop-c
 ```text
 stop-conditions = { 'circle-1': 5, 'circle-2': 12 }
 ```
-After finish counting, a `finish` event will be emitted.
+After finish counting, a `finished` event will be emitted.
 
 
 ### Incremental or decremental
@@ -88,5 +122,13 @@ By default, counting is incremental, but if you want to make it counting downwar
 ### events
 | Events | Description |
 | --- | --- |
-| finish | Fires when counter reaches to stop conditions. |
+| finished | Fires when counter reaches to stop conditions. |
 | update | Fires on each counting. |
+
+## Development
+```
+npm install
+npm run dev     # run the playground (playground/App.vue)
+npm run lint
+npm run build   # build the library into dist/
+```
