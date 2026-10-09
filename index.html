@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Vue Circular Count Down Timer</title>
+		<meta name="description" content="Fully customizable circular count down timers for Vue 3. Interactive playground and examples.">
+		<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+		<script>
+			// Apply the saved or system theme before the first paint
+			try {
+				const theme = localStorage.getItem('cdt-theme');
+				if (theme === 'light' || theme === 'dark') {
+					document.documentElement.dataset.theme = theme;
+				}
+			} catch (e) {}
+		</script>
+		<script type="module" crossorigin src="/vue-circular-count-down-timer/assets/index-TWYUgbts.js"></script>
+		<link rel="stylesheet" crossorigin href="/vue-circular-count-down-timer/assets/index-kogN0vkt.css">
+	</head>
+	<body>
+		<div id="app"></div>
+	</body>
+</html>
